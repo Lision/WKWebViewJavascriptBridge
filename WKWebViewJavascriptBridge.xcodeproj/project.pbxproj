@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC3D0B1C201440BF008B7E77 /* WKWebViewJavascriptBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3D0B1B201440BF008B7E77 /* WKWebViewJavascriptBridge.swift */; };
+		BC3D0B1E201440D9008B7E77 /* WKWebViewJavascriptBridgeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3D0B1D201440D9008B7E77 /* WKWebViewJavascriptBridgeBase.swift */; };
+		BC3D0B20201440E8008B7E77 /* WKWebViewJavascriptBridge_JS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3D0B1F201440E8008B7E77 /* WKWebViewJavascriptBridge_JS.swift */; };
 		BC4A38AE20138F7500E96E5D /* WKWebViewJavascriptBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4A38A420138F7500E96E5D /* WKWebViewJavascriptBridge.framework */; };
 		BC4A38B320138F7500E96E5D /* WKWebViewJavascriptBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A38B220138F7500E96E5D /* WKWebViewJavascriptBridgeTests.swift */; };
 		BC4A38B520138F7500E96E5D /* WKWebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4A38A720138F7500E96E5D /* WKWebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -23,6 +26,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BC3D0B1B201440BF008B7E77 /* WKWebViewJavascriptBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewJavascriptBridge.swift; sourceTree = "<group>"; };
+		BC3D0B1D201440D9008B7E77 /* WKWebViewJavascriptBridgeBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewJavascriptBridgeBase.swift; sourceTree = "<group>"; };
+		BC3D0B1F201440E8008B7E77 /* WKWebViewJavascriptBridge_JS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewJavascriptBridge_JS.swift; sourceTree = "<group>"; };
 		BC4A38A420138F7500E96E5D /* WKWebViewJavascriptBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WKWebViewJavascriptBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC4A38A720138F7500E96E5D /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		BC4A38A820138F7500E96E5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -72,6 +78,9 @@
 			isa = PBXGroup;
 			children = (
 				BC4A38A720138F7500E96E5D /* WKWebViewJavascriptBridge.h */,
+				BC3D0B1F201440E8008B7E77 /* WKWebViewJavascriptBridge_JS.swift */,
+				BC3D0B1B201440BF008B7E77 /* WKWebViewJavascriptBridge.swift */,
+				BC3D0B1D201440D9008B7E77 /* WKWebViewJavascriptBridgeBase.swift */,
 				BC4A38A820138F7500E96E5D /* Info.plist */,
 			);
 			path = WKWebViewJavascriptBridge;
@@ -148,6 +157,7 @@
 				TargetAttributes = {
 					BC4A38A320138F7500E96E5D = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					BC4A38AC20138F7500E96E5D = {
@@ -196,6 +206,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC3D0B1E201440D9008B7E77 /* WKWebViewJavascriptBridgeBase.swift in Sources */,
+				BC3D0B20201440E8008B7E77 /* WKWebViewJavascriptBridge_JS.swift in Sources */,
+				BC3D0B1C201440BF008B7E77 /* WKWebViewJavascriptBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +347,7 @@
 		BC4A38B920138F7500E96E5D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -343,10 +357,12 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WKWebViewJavascriptBridge/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lision.WKWebViewJavascriptBridge;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -355,6 +371,7 @@
 		BC4A38BA20138F7500E96E5D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -364,6 +381,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WKWebViewJavascriptBridge/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lision.WKWebViewJavascriptBridge;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -376,6 +394,7 @@
 		BC4A38BC20138F7500E96E5D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ACXP2JHJKF;
 				INFOPLIST_FILE = WKWebViewJavascriptBridgeTests/Info.plist;
@@ -390,6 +409,7 @@
 		BC4A38BD20138F7500E96E5D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ACXP2JHJKF;
 				INFOPLIST_FILE = WKWebViewJavascriptBridgeTests/Info.plist;
