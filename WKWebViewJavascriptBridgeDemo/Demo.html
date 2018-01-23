@@ -25,10 +25,10 @@
 <!--        document.documentElement.appendChild(WVJBIframe);-->
         window.webkit.messageHandlers.setupWKWebViewJavascriptBridge.postMessage()
 
-        setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+<!--        setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)-->
     }
 
-    setupWebViewJavascriptBridge(function(bridge) {
+    setupWKWebViewJavascriptBridge(function(bridge) {
 		var uniqueId = 1
 		function log(message, data) {
 			var log = document.getElementById('log')

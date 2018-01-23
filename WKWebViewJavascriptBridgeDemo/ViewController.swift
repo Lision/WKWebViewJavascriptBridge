@@ -21,6 +21,10 @@ class ViewController: UIViewController {
         bridge = WKWebViewJavascriptBridge(webView: webView)
         view.addSubview(webView)
     }
+    
+    func loadDemoPage() {
+        let pagePath = Bundle.main.path(forResource: "Demo", ofType: "html")
+    }
 }
 
 extension ViewController: WKNavigationDelegate {
