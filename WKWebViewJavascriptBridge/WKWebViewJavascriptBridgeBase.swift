@@ -14,10 +14,10 @@ protocol WKWebViewJavascriptBridgeBaseDelegate: AnyObject {
 }
 
 @available(iOS 9.0, *)
-class WKWebViewJavascriptBridgeBase: NSObject {
-    typealias Callback = (_ responseData: Any?) -> Void
-    typealias Handler = (_ parameters: [String: Any]?, _ callback: Callback?) -> Void
-    typealias Message = [String: Any]
+public class WKWebViewJavascriptBridgeBase: NSObject {
+    public typealias Callback = (_ responseData: Any?) -> Void
+    public typealias Handler = (_ parameters: [String: Any]?, _ callback: Callback?) -> Void
+    public typealias Message = [String: Any]
     
     weak var delegate: WKWebViewJavascriptBridgeBaseDelegate?
     var startupMessageQueue = [Message]()
@@ -25,18 +25,15 @@ class WKWebViewJavascriptBridgeBase: NSObject {
     var messageHandlers = [String: Handler]()
     var uniqueId = 0
     
-    override init() {
-        super.init()
-    }
-    
     func reset() {
         self.startupMessageQueue = [Message]()
         self.responseCallbacks = [String: Callback]()
         self.uniqueId = 0
     }
     
-    func send(data: Any?, callback: Callback?, handlerName: String?) {
+    func send(handlerName: String, data: Any?, callback: Callback?) {
         var message = [String: Any]()
+        message["handlerName"] = handlerName
         
         if data != nil {
             message["data"] = data
@@ -47,10 +44,6 @@ class WKWebViewJavascriptBridgeBase: NSObject {
             let callbackID = "native_iOS_cb_\(self.uniqueId)"
             self.responseCallbacks[callbackID] = callback
             message["callbackID"] = callbackID
-        }
-        
-        if handlerName != nil {
-            message["handlerName"] = handlerName
         }
         
         self.queue(message: message)
@@ -99,7 +92,7 @@ class WKWebViewJavascriptBridgeBase: NSObject {
     }
     
     // MARK: - Private
-    fileprivate func queue(message: Message) {
+    private func queue(message: Message) {
         if self.startupMessageQueue.isEmpty {
             self.dispatch(message: message)
         } else {
@@ -107,7 +100,7 @@ class WKWebViewJavascriptBridgeBase: NSObject {
         }
     }
     
-    fileprivate func dispatch(message: Message) {
+    private func dispatch(message: Message) {
         guard var messageJSON = self.serialize(message: message, pretty: false) else {
             return
         }
@@ -121,7 +114,7 @@ class WKWebViewJavascriptBridgeBase: NSObject {
 //        messageJSON = messageJSON.replacingOccurrences(of: "\u2028", with: "\\u2028")
 //        messageJSON = messageJSON.replacingOccurrences(of: "\u2029", with: "\\u2029")
         
-        let javascriptCommand = "WebViewJavascriptBridge._handleMessageFromObjC('\(messageJSON)');"
+        let javascriptCommand = "WebViewJavascriptBridge._handleMessageFromiOS('\(messageJSON)');"
         if Thread.current.isMainThread {
             self.delegate?.evaluateJavascript(javascript: javascriptCommand)
         } else {
@@ -132,7 +125,7 @@ class WKWebViewJavascriptBridgeBase: NSObject {
     }
     
     // MARK: - JSON
-    fileprivate func serialize(message: Message, pretty: Bool) -> String? {
+    private func serialize(message: Message, pretty: Bool) -> String? {
         var result: String?
         do {
             let data = try JSONSerialization.data(withJSONObject: message, options: pretty ? .prettyPrinted : JSONSerialization.WritingOptions(rawValue: 0))
@@ -143,7 +136,7 @@ class WKWebViewJavascriptBridgeBase: NSObject {
         return result
     }
     
-    fileprivate func deserialize(messageJSON: String) -> [Message]? {
+    private func deserialize(messageJSON: String) -> [Message]? {
         var result = [Message]()
         guard let data = messageJSON.data(using: .utf8) else {
             return nil
@@ -157,7 +150,7 @@ class WKWebViewJavascriptBridgeBase: NSObject {
     }
     
     // MARK: - Log
-    fileprivate func log<T>(_ message: T, file: String = #file, function: String = #function, line: Int = #line) {
+    private func log<T>(_ message: T, file: String = #file, function: String = #function, line: Int = #line) {
         #if DEBUG
             let fileName = (file as NSString).lastPathComponent
             print("\(fileName):\(line) \(function) | \(message)")
