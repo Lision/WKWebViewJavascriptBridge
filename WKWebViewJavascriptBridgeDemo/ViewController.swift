@@ -18,8 +18,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         webView.frame = view.bounds
         webView.navigationDelegate = self
-        bridge = WKWebViewJavascriptBridge(webView: webView)
         view.addSubview(webView)
+        bridge = WKWebViewJavascriptBridge(webView: webView)
+        bridge.register(handlerName: "testiOSCallback") { (paramters, callback) in
+            print("testiOSCallback called: \(String(describing: paramters))")
+            callback!("Response from testiOSCallback")
+        }
         loadDemoPage()
     }
     

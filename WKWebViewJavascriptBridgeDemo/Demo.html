@@ -49,11 +49,11 @@
 		document.body.appendChild(document.createElement('br'))
 
 		var callbackButton = document.getElementById('buttons').appendChild(document.createElement('button'))
-		callbackButton.innerHTML = 'Fire testObjcCallback'
+		callbackButton.innerHTML = 'Fire testiOSCallback'
 		callbackButton.onclick = function(e) {
 			e.preventDefault()
-			log('JS calling handler "testObjcCallback"')
-			bridge.callHandler('testObjcCallback', {'foo': 'bar'}, function(response) {
+			log('JS calling handler "testiOSCallback"')
+			bridge.callHandler('testiOSCallback', {'foo': 'bar'}, function(response) {
 				log('JS got response', response)
 			})
 		}
@@ -105,12 +105,14 @@
       
       function _doSend(message, responseCallback) {
           if (responseCallback) {
-              var callbackId = 'cb_'+(uniqueId++)+'_'+new Date().getTime();
-              responseCallbacks[callbackId] = responseCallback;
-              message['callbackId'] = callbackId;
+              var callbackID = 'cb_'+(uniqueId++)+'_'+new Date().getTime();
+              responseCallbacks[callbackID] = responseCallback;
+              message['callbackID'] = callbackID;
           }
           sendMessageQueue.push(message);
-          messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
+      
+<!--          messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;-->
+          window.webkit.messageHandlers.iOS_Native_FlushMessageQueue.postMessage(null)
       }
       
       function _fetchQueue() {
@@ -131,18 +133,18 @@
               var messageHandler;
               var responseCallback;
       
-              if (message.responseId) {
-                  responseCallback = responseCallbacks[message.responseId];
+              if (message.responseID) {
+                  responseCallback = responseCallbacks[message.responseID];
                   if (!responseCallback) {
                       return;
                   }
                   responseCallback(message.responseData);
-                  delete responseCallbacks[message.responseId];
+                  delete responseCallbacks[message.responseID];
               } else {
-                  if (message.callbackId) {
-                      var callbackResponseId = message.callbackId;
+                  if (message.callbackID) {
+                      var callbackResponseId = message.callbackID;
                       responseCallback = function(responseData) {
-                          _doSend({ handlerName:message.handlerName, responseId:callbackResponseId, responseData:responseData });
+                          _doSend({ handlerName:message.handlerName, responseID:callbackResponseId, responseData:responseData });
                       };
                   }
       

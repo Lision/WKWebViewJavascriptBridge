@@ -113,7 +113,7 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
 //        messageJSON = messageJSON.replacingOccurrences(of: "\u2028", with: "\\u2028")
 //        messageJSON = messageJSON.replacingOccurrences(of: "\u2029", with: "\\u2029")
         
-        let javascriptCommand = "WebViewJavascriptBridge._handleMessageFromiOS('\(messageJSON)');"
+        let javascriptCommand = "WKWebViewJavascriptBridge._handleMessageFromiOS('\(messageJSON)');"
         if Thread.current.isMainThread {
             self.delegate?.evaluateJavascript(javascript: javascriptCommand)
         } else {
