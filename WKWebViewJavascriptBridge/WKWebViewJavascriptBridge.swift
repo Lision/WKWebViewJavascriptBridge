@@ -11,7 +11,8 @@ import WebKit
 
 @available(iOS 9.0, *)
 public class WKWebViewJavascriptBridge: NSObject {
-    private let injectJavascript = "iOS_Native_InjectJavascript"
+    private let iOS_Native_InjectJavascript = "iOS_Native_InjectJavascript"
+    private let iOS_Native_FlushMessageQueue = "iOS_Native_FlushMessageQueue"
     
     private weak var webView: WKWebView!
     private var base: WKWebViewJavascriptBridgeBase!
@@ -19,7 +20,8 @@ public class WKWebViewJavascriptBridge: NSObject {
     public init(webView: WKWebView) {
         super.init()
         self.webView = webView
-        self.webView.configuration.userContentController.add(self, name: injectJavascript)
+        self.webView.configuration.userContentController.add(self, name: iOS_Native_InjectJavascript)
+        self.webView.configuration.userContentController.add(self, name: iOS_Native_FlushMessageQueue)
         base = WKWebViewJavascriptBridgeBase()
         base.delegate = self
     }
@@ -60,9 +62,12 @@ extension WKWebViewJavascriptBridge: WKWebViewJavascriptBridgeBaseDelegate {
 
 extension WKWebViewJavascriptBridge: WKScriptMessageHandler {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == injectJavascript {
-            self.base.injectJavascriptFile()
-        } else {
+        if message.name == iOS_Native_InjectJavascript {
+//            self.base.injectJavascriptFile()
+            print("self.base.injectJavascriptFile()")
+        }
+        
+        if message.name == iOS_Native_FlushMessageQueue {
             self.flushMessageQueue()
         }
     }
