@@ -14,6 +14,7 @@
 		BC4A38B320138F7500E96E5D /* WKWebViewJavascriptBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A38B220138F7500E96E5D /* WKWebViewJavascriptBridgeTests.swift */; };
 		BC4A38B520138F7500E96E5D /* WKWebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4A38A720138F7500E96E5D /* WKWebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BC942673201750BA00A5A6F9 /* WKWebViewJavascriptBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4A38A420138F7500E96E5D /* WKWebViewJavascriptBridge.framework */; };
+		BC94267420182E8300A5A6F9 /* Demo.html in Resources */ = {isa = PBXBuildFile; fileRef = BC995A582016F6A60012F728 /* Demo.html */; };
 		BC995A492016F5690012F728 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC995A482016F5690012F728 /* AppDelegate.swift */; };
 		BC995A4B2016F5690012F728 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC995A4A2016F5690012F728 /* ViewController.swift */; };
 		BC995A4E2016F5690012F728 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC995A4C2016F5690012F728 /* Main.storyboard */; };
@@ -272,6 +273,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC94267420182E8300A5A6F9 /* Demo.html in Resources */,
 				BC995A532016F5690012F728 /* LaunchScreen.storyboard in Resources */,
 				BC995A502016F5690012F728 /* Assets.xcassets in Resources */,
 				BC995A4E2016F5690012F728 /* Main.storyboard in Resources */,

@@ -8,7 +8,7 @@
 		.logLine { border-bottom:1px solid #ccc; padding:4px 2px; font-family:courier; font-size:11px; }
 	</style>
 </head><body>
-	<h1>WebViewJavascriptBridge Demo</h1>
+	<h1>Demo</h1>
 	<script>
 	window.onerror = function(err) {
 		log('window.onerror: ' + err)
@@ -23,7 +23,7 @@
 <!--        WVJBIframe.style.display = 'none';-->
 <!--        WVJBIframe.src = 'https://__bridge_loaded__';-->
 <!--        document.documentElement.appendChild(WVJBIframe);-->
-        window.webkit.messageHandlers.setupWKWebViewJavascriptBridge.postMessage()
+        window.webkit.messageHandlers.iOS_Native_InjectJavascript.postMessage(null)
 
 <!--        setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)-->
     }
