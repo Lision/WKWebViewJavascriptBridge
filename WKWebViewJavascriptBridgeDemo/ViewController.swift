@@ -13,17 +13,40 @@ import WKWebViewJavascriptBridge
 class ViewController: UIViewController {
     let webView = WKWebView(frame: CGRect(), configuration: WKWebViewConfiguration())
     var bridge: WKWebViewJavascriptBridge!
+    let callbackBtn = UIButton(type: .custom)
+    let reloadBtn = UIButton(type: .custom)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // setup webView
         webView.frame = view.bounds
         webView.navigationDelegate = self
         view.addSubview(webView)
+        
+        // setup btns
+        callbackBtn.backgroundColor = .purple
+        callbackBtn.setTitle("Call Handler", for: .normal)
+        callbackBtn.addTarget(self, action: #selector(callHandler), for: .touchUpInside)
+        view.insertSubview(callbackBtn, aboveSubview: webView)
+        callbackBtn.frame = CGRect(x: 10, y: UIScreen.main.bounds.size.height - 80, width: UIScreen.main.bounds.size.width * 0.4, height: 35)
+        reloadBtn.backgroundColor = .orange
+        reloadBtn.setTitle("Reload Webview", for: .normal)
+        reloadBtn.addTarget(self, action: #selector(reloadWebView), for: .touchUpInside)
+        view.insertSubview(reloadBtn, aboveSubview: webView)
+        reloadBtn.frame = CGRect(x: UIScreen.main.bounds.size.width * 0.6 - 10, y: UIScreen.main.bounds.size.height - 80, width: UIScreen.main.bounds.size.width * 0.4, height: 35)
+        
+        // setup bridge
         bridge = WKWebViewJavascriptBridge(webView: webView)
         bridge.register(handlerName: "testiOSCallback") { (paramters, callback) in
             print("testiOSCallback called: \(String(describing: paramters))")
             callback!("Response from testiOSCallback")
         }
+        bridge.call(handlerName: "testJavascriptHandler", data: ["foo": "before ready"], callback: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadDemoPage()
     }
     
@@ -45,6 +68,17 @@ class ViewController: UIViewController {
         } catch let error {
             print("webView loadDemoPage error: \(error)")
         }
+    }
+    
+    @objc func callHandler() {
+        let data = ["greetingFromiOS": "Hi there, JS!"]
+        bridge.call(handlerName: "testJavascriptHandler", data: data) { (response) in
+            print("testJavascriptHandler responded: \(String(describing: response))")
+        }
+    }
+    
+    @objc func reloadWebView() {
+        webView.reload()
     }
 }
 
