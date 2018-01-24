@@ -66,9 +66,7 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
                 var callback: Callback?
                 if let callbackID = message["callbackID"] {
                     callback = { (_ responseData: Any?) -> Void in
-                        guard responseData != nil else {
-                            return
-                        }
+                        guard responseData != nil else { return }
                         
                         let msg = ["responseID": callbackID, "responseData": responseData!] as Message
                         self.queue(message: msg)
@@ -79,9 +77,7 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
                     }
                 }
                 
-                guard let handlerName = message["handlerName"] as? String else {
-                    return
-                }
+                guard let handlerName = message["handlerName"] as? String else { return }
                 guard let handler = self.messageHandlers[handlerName] else {
                     log("NoHandlerException, No handler for message from JS: \(message)")
                     return
@@ -89,6 +85,11 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
                 handler(message["data"] as? [String : Any], callback)
             }
         }
+    }
+    
+    func injectJavascriptFile() {
+        let js = WKWebViewJavascriptBridgeJS
+        self.delegate?.evaluateJavascript(javascript: js)
     }
     
     // MARK: - Private
@@ -101,9 +102,7 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
     }
     
     private func dispatch(message: Message) {
-        guard var messageJSON = self.serialize(message: message, pretty: false) else {
-            return
-        }
+        guard var messageJSON = self.serialize(message: message, pretty: false) else { return }
         
         messageJSON = messageJSON.replacingOccurrences(of: "\\", with: "\\\\")
         messageJSON = messageJSON.replacingOccurrences(of: "\"", with: "\\\"")
@@ -138,9 +137,7 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
     
     private func deserialize(messageJSON: String) -> [Message]? {
         var result = [Message]()
-        guard let data = messageJSON.data(using: .utf8) else {
-            return nil
-        }
+        guard let data = messageJSON.data(using: .utf8) else { return nil }
         do {
             result = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [WKWebViewJavascriptBridgeBase.Message]
         } catch let error {

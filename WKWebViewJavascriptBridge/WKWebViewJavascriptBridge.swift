@@ -11,12 +11,17 @@ import WebKit
 
 @available(iOS 9.0, *)
 public class WKWebViewJavascriptBridge: NSObject {
+    private let injectJavascript = "iOS_Native_InjectJavascript"
+    
     private weak var webView: WKWebView!
     private var base: WKWebViewJavascriptBridgeBase!
     
     public init(webView: WKWebView) {
-        self.webView = webView
         super.init()
+        self.webView = webView
+        self.webView.configuration.userContentController.add(self, name: injectJavascript)
+        base = WKWebViewJavascriptBridgeBase()
+        base.delegate = self
     }
     
     public func reset() {
@@ -47,8 +52,18 @@ public class WKWebViewJavascriptBridge: NSObject {
     }
 }
 
+extension WKWebViewJavascriptBridge: WKWebViewJavascriptBridgeBaseDelegate {
+    func evaluateJavascript(javascript: String) {
+        self.webView.evaluateJavaScript(javascript, completionHandler: nil)
+    }
+}
+
 extension WKWebViewJavascriptBridge: WKScriptMessageHandler {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        self.flushMessageQueue()
+        if message.name == injectJavascript {
+            self.base.injectJavascriptFile()
+        } else {
+            self.flushMessageQueue()
+        }
     }
 }
