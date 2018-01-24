@@ -26,9 +26,9 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
     var uniqueId = 0
     
     func reset() {
-        self.startupMessageQueue = [Message]()
-        self.responseCallbacks = [String: Callback]()
-        self.uniqueId = 0
+        startupMessageQueue = [Message]()
+        responseCallbacks = [String: Callback]()
+        uniqueId = 0
     }
     
     func send(handlerName: String, data: Any?, callback: Callback?) {
@@ -40,17 +40,17 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
         }
         
         if callback != nil {
-            self.uniqueId += 1
-            let callbackID = "native_iOS_cb_\(self.uniqueId)"
-            self.responseCallbacks[callbackID] = callback
+            uniqueId += 1
+            let callbackID = "native_iOS_cb_\(uniqueId)"
+            responseCallbacks[callbackID] = callback
             message["callbackID"] = callbackID
         }
         
-        self.queue(message: message)
+        queue(message: message)
     }
     
     func flush(messageQueueString: String) {
-        guard let messages = self.deserialize(messageJSON: messageQueueString) else {
+        guard let messages = deserialize(messageJSON: messageQueueString) else {
             log(messageQueueString)
             return
         }
@@ -59,9 +59,9 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
             log(message)
             
             if let responseID = message["responseID"] as? String {
-                let callback = self.responseCallbacks[responseID]
+                let callback = responseCallbacks[responseID]
                 callback!(message["responseData"]!)
-                self.responseCallbacks.removeValue(forKey: responseID)
+                responseCallbacks.removeValue(forKey: responseID)
             } else {
                 var callback: Callback?
                 if let callbackID = message["callbackID"] {
@@ -78,7 +78,7 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
                 }
                 
                 guard let handlerName = message["handlerName"] as? String else { return }
-                guard let handler = self.messageHandlers[handlerName] else {
+                guard let handler = messageHandlers[handlerName] else {
                     log("NoHandlerException, No handler for message from JS: \(message)")
                     return
                 }
@@ -89,20 +89,20 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
     
     func injectJavascriptFile() {
         let js = WKWebViewJavascriptBridgeJS
-        self.delegate?.evaluateJavascript(javascript: js)
+        delegate?.evaluateJavascript(javascript: js)
     }
     
     // MARK: - Private
     private func queue(message: Message) {
-        if self.startupMessageQueue.isEmpty {
-            self.dispatch(message: message)
+        if startupMessageQueue.isEmpty {
+            dispatch(message: message)
         } else {
-            self.startupMessageQueue.append(message)
+            startupMessageQueue.append(message)
         }
     }
     
     private func dispatch(message: Message) {
-        guard var messageJSON = self.serialize(message: message, pretty: false) else { return }
+        guard var messageJSON = serialize(message: message, pretty: false) else { return }
         
         messageJSON = messageJSON.replacingOccurrences(of: "\\", with: "\\\\")
         messageJSON = messageJSON.replacingOccurrences(of: "\"", with: "\\\"")
@@ -115,7 +115,7 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
         
         let javascriptCommand = "WKWebViewJavascriptBridge._handleMessageFromiOS('\(messageJSON)');"
         if Thread.current.isMainThread {
-            self.delegate?.evaluateJavascript(javascript: javascriptCommand)
+            delegate?.evaluateJavascript(javascript: javascriptCommand)
         } else {
             DispatchQueue.main.async {
                 self.delegate?.evaluateJavascript(javascript: javascriptCommand)

@@ -56,19 +56,19 @@ public class WKWebViewJavascriptBridge: NSObject {
 
 extension WKWebViewJavascriptBridge: WKWebViewJavascriptBridgeBaseDelegate {
     func evaluateJavascript(javascript: String) {
-        self.webView.evaluateJavaScript(javascript, completionHandler: nil)
+        webView.evaluateJavaScript(javascript, completionHandler: nil)
     }
 }
 
 extension WKWebViewJavascriptBridge: WKScriptMessageHandler {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == iOS_Native_InjectJavascript {
-//            self.base.injectJavascriptFile()
-            print("self.base.injectJavascriptFile()")
+//            base.injectJavascriptFile()
+            print("base.injectJavascriptFile()")
         }
         
         if message.name == iOS_Native_FlushMessageQueue {
-            self.flushMessageQueue()
+            flushMessageQueue()
         }
     }
 }
