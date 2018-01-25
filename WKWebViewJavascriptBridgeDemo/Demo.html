@@ -16,8 +16,8 @@
 
     function setupWKWebViewJavascriptBridge(callback) {
         if (window.WKWebViewJavascriptBridge) { return callback(WKWebViewJavascriptBridge); }
-        if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
-        window.WVJBCallbacks = [callback];
+        if (window.WKWVJBCallbacks) { return window.WKWVJBCallbacks.push(callback); }
+        window.WKWVJBCallbacks = [callback];
         
 <!--        var WVJBIframe = document.createElement('iframe');-->
 <!--        WVJBIframe.style.display = 'none';-->
@@ -40,7 +40,7 @@
 		}
 
 		bridge.registerHandler('testJavascriptHandler', function(data, responseCallback) {
-			log('ObjC called testJavascriptHandler with', data)
+			log('iOS called testJavascriptHandler with', data)
 			var responseData = { 'Javascript Says':'Right back atcha!' }
 			log('JS responding with', responseData)
 			responseCallback(responseData)
@@ -150,7 +150,7 @@
       
                   var handler = messageHandlers[message.handlerName];
                   if (!handler) {
-                      console.log("WKWebViewJavascriptBridge: WARNING: no handler for message from ObjC:", message);
+                      console.log("WKWebViewJavascriptBridge: WARNING: no handler for message from iOS:", message);
                   } else {
                       handler(message.data, responseCallback);
                   }
@@ -171,8 +171,8 @@
       
       setTimeout(_callWVJBCallbacks, 0);
       function _callWVJBCallbacks() {
-          var callbacks = window.WVJBCallbacks;
-          delete window.WVJBCallbacks;
+          var callbacks = window.WKWVJBCallbacks;
+          delete window.WKWVJBCallbacks;
           for (var i=0; i<callbacks.length; i++) {
               callbacks[i](WKWebViewJavascriptBridge);
           }
