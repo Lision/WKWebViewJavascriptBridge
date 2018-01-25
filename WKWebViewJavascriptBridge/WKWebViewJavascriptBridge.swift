@@ -63,8 +63,7 @@ extension WKWebViewJavascriptBridge: WKWebViewJavascriptBridgeBaseDelegate {
 extension WKWebViewJavascriptBridge: WKScriptMessageHandler {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == iOS_Native_InjectJavascript {
-//            base.injectJavascriptFile()
-            print("base.injectJavascriptFile()")
+            base.injectJavascriptFile()
         }
         
         if message.name == iOS_Native_FlushMessageQueue {

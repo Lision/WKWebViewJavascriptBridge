@@ -22,21 +22,15 @@ let WKWebViewJavascriptBridgeJS = """
     window.WKWebViewJavascriptBridge = {
         registerHandler: registerHandler,
         callHandler: callHandler,
-        disableJavscriptAlertBoxSafetyTimeout: disableJavscriptAlertBoxSafetyTimeout,
         _fetchQueue: _fetchQueue,
         _handleMessageFromiOS: _handleMessageFromiOS
     };
 
-    var messagingIframe;
     var sendMessageQueue = [];
     var messageHandlers = {};
 
-    var CUSTOM_PROTOCOL_SCHEME = 'https';
-    var QUEUE_HAS_MESSAGE = '__wvjb_queue_message__';
-
     var responseCallbacks = {};
     var uniqueId = 1;
-    var dispatchMessagesWithTimeoutSafety = true;
 
     function registerHandler(handlerName, handler) {
         messageHandlers[handlerName] = handler;
@@ -49,18 +43,15 @@ let WKWebViewJavascriptBridgeJS = """
         }
         _doSend({ handlerName:handlerName, data:data }, responseCallback);
     }
-    function disableJavscriptAlertBoxSafetyTimeout() {
-        dispatchMessagesWithTimeoutSafety = false;
-    }
 
     function _doSend(message, responseCallback) {
         if (responseCallback) {
-            var callbackId = 'cb_'+(uniqueId++)+'_'+new Date().getTime();
-            responseCallbacks[callbackId] = responseCallback;
-            message['callbackId'] = callbackId;
+            var callbackID = 'cb_'+(uniqueId++)+'_'+new Date().getTime();
+            responseCallbacks[callbackID] = responseCallback;
+            message['callbackID'] = callbackID;
         }
         sendMessageQueue.push(message);
-        messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
+        window.webkit.messageHandlers.iOS_Native_FlushMessageQueue.postMessage(null)
     }
 
     function _fetchQueue() {
@@ -70,38 +61,30 @@ let WKWebViewJavascriptBridgeJS = """
     }
 
     function _dispatchMessageFromiOS(messageJSON) {
-        if (dispatchMessagesWithTimeoutSafety) {
-            setTimeout(_doDispatchMessageFromiOS);
+        var message = JSON.parse(messageJSON);
+        var messageHandler;
+        var responseCallback;
+
+        if (message.responseID) {
+            responseCallback = responseCallbacks[message.responseID];
+            if (!responseCallback) {
+                return;
+            }
+            responseCallback(message.responseData);
+            delete responseCallbacks[message.responseID];
         } else {
-            _doDispatchMessageFromiOS();
-        }
+            if (message.callbackID) {
+                var callbackResponseId = message.callbackID;
+                responseCallback = function(responseData) {
+                    _doSend({ handlerName:message.handlerName, responseID:callbackResponseId, responseData:responseData });
+                };
+            }
 
-        function _doDispatchMessageFromiOS() {
-            var message = JSON.parse(messageJSON);
-            var messageHandler;
-            var responseCallback;
-
-            if (message.responseId) {
-                responseCallback = responseCallbacks[message.responseId];
-                if (!responseCallback) {
-                    return;
-                }
-                responseCallback(message.responseData);
-                delete responseCallbacks[message.responseId];
+            var handler = messageHandlers[message.handlerName];
+            if (!handler) {
+                console.log("WKWebViewJavascriptBridge: WARNING: no handler for message from iOS:", message);
             } else {
-                if (message.callbackId) {
-                    var callbackResponseId = message.callbackId;
-                    responseCallback = function(responseData) {
-                        _doSend({ handlerName:message.handlerName, responseId:callbackResponseId, responseData:responseData });
-                    };
-                }
-
-                var handler = messageHandlers[message.handlerName];
-                if (!handler) {
-                    console.log("WKWebViewJavascriptBridge: WARNING: no handler for message from ObjC:", message);
-                } else {
-                    handler(message.data, responseCallback);
-                }
+                handler(message.data, responseCallback);
             }
         }
     }
@@ -110,18 +93,11 @@ let WKWebViewJavascriptBridgeJS = """
         _dispatchMessageFromiOS(messageJSON);
     }
 
-    messagingIframe = document.createElement('iframe');
-    messagingIframe.style.display = 'none';
-    messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
-    document.documentElement.appendChild(messagingIframe);
-
-    registerHandler("_disableJavascriptAlertBoxSafetyTimeout", disableJavscriptAlertBoxSafetyTimeout);
-
     setTimeout(_callWVJBCallbacks, 0);
     function _callWVJBCallbacks() {
-        var callbacks = window.WVJBCallbacks;
-        delete window.WVJBCallbacks;
-        for (var i=0; i<callbacks.length; i++) {
+        var callbacks = window.WKWVJBCallbacks;
+        delete window.WKWVJBCallbacks;
+        for (var i = 0; i < callbacks.length; i++) {
             callbacks[i](WKWebViewJavascriptBridge);
         }
     }
