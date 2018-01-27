@@ -59,16 +59,14 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
             log(message)
             
             if let responseID = message["responseID"] as? String {
-                let callback = responseCallbacks[responseID]
-                callback!(message["responseData"]!)
+                guard let callback = responseCallbacks[responseID] else { continue }
+                callback(message["responseData"])
                 responseCallbacks.removeValue(forKey: responseID)
             } else {
                 var callback: Callback?
                 if let callbackID = message["callbackID"] {
                     callback = { (_ responseData: Any?) -> Void in
-                        guard responseData != nil else { return }
-                        
-                        let msg = ["responseID": callbackID, "responseData": responseData!] as Message
+                        let msg = ["responseID": callbackID, "responseData": responseData ?? NSNull()] as Message
                         self.queue(message: msg)
                     }
                 } else {
@@ -128,7 +126,7 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
         var result: String?
         do {
             let data = try JSONSerialization.data(withJSONObject: message, options: pretty ? .prettyPrinted : JSONSerialization.WritingOptions(rawValue: 0))
-            result = String(data: data, encoding: .utf8)!
+            result = String(data: data, encoding: .utf8)
         } catch let error {
             log(error)
         }

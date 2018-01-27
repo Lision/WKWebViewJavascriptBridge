@@ -14,14 +14,14 @@ public class WKWebViewJavascriptBridge: NSObject {
     private let iOS_Native_InjectJavascript = "iOS_Native_InjectJavascript"
     private let iOS_Native_FlushMessageQueue = "iOS_Native_FlushMessageQueue"
     
-    private weak var webView: WKWebView!
+    private weak var webView: WKWebView?
     private var base: WKWebViewJavascriptBridgeBase!
     
     public init(webView: WKWebView) {
         super.init()
         self.webView = webView
-        self.webView.configuration.userContentController.add(self, name: iOS_Native_InjectJavascript)
-        self.webView.configuration.userContentController.add(self, name: iOS_Native_FlushMessageQueue)
+        self.webView?.configuration.userContentController.add(self, name: iOS_Native_InjectJavascript)
+        self.webView?.configuration.userContentController.add(self, name: iOS_Native_FlushMessageQueue)
         base = WKWebViewJavascriptBridgeBase()
         base.delegate = self
     }
@@ -43,7 +43,7 @@ public class WKWebViewJavascriptBridge: NSObject {
     }
     
     func flushMessageQueue() {
-        webView.evaluateJavaScript("WKWebViewJavascriptBridge._fetchQueue();") { (result, error) in
+        webView?.evaluateJavaScript("WKWebViewJavascriptBridge._fetchQueue();") { (result, error) in
             if error != nil {
                 print("WKWebViewJavascriptBridge: WARNING: Error when trying to fetch data from WKWebView: \(String(describing: error))")
             }
@@ -56,7 +56,7 @@ public class WKWebViewJavascriptBridge: NSObject {
 
 extension WKWebViewJavascriptBridge: WKWebViewJavascriptBridgeBaseDelegate {
     func evaluateJavascript(javascript: String) {
-        webView.evaluateJavaScript(javascript, completionHandler: nil)
+        webView?.evaluateJavaScript(javascript, completionHandler: nil)
     }
 }
 
