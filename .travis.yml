@@ -1,0 +1,14 @@
+language: objective-c
+osx_image: xcode9
+xcode_project: WKWebViewJavascriptBridge.xcodeproj
+xcode_scheme: WKWebViewJavascriptBridge
+
+before_install:
+- env
+- xcodebuild -version
+- xcodebuild -showsdks
+- xcpretty --version
+
+script:
+- set -o pipefail
+- xcodebuild clean build -project "$TRAVIS_XCODE_PROJECT"  -scheme "$TRAVIS_XCODE_SCHEME" | xcpretty
