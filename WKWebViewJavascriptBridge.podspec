@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = 'WKWebViewJavascriptBridge'
   s.summary          = 'A Bridge for Sending Messages between Swift and JavaScript in WKWebViews.'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Lision' => 'lisionmail@gmail.com' }
   s.social_media_url = 'https://lision.me/'
