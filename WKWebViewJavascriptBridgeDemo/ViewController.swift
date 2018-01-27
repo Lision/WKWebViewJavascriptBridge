@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         bridge = WKWebViewJavascriptBridge(webView: webView)
         bridge.register(handlerName: "testiOSCallback") { (paramters, callback) in
             print("testiOSCallback called: \(String(describing: paramters))")
-            callback!("Response from testiOSCallback")
+            callback?("Response from testiOSCallback")
         }
         bridge.call(handlerName: "testJavascriptHandler", data: ["foo": "before ready"], callback: nil)
     }
@@ -56,12 +56,11 @@ class ViewController: UIViewController {
         }
         
         do {
-            let pagePath = Bundle.main.path(forResource: "Demo", ofType: "html")
-            guard pagePath != nil else {
+            guard let pagePath = Bundle.main.path(forResource: "Demo", ofType: "html") else {
                 throw LoadDemoPageError.nilPath
             }
-            let pageHtml = try String(contentsOfFile: pagePath!, encoding: .utf8)
-            let baseURL = URL(fileURLWithPath: pagePath!)
+            let pageHtml = try String(contentsOfFile: pagePath, encoding: .utf8)
+            let baseURL = URL(fileURLWithPath: pagePath)
             webView.loadHTMLString(pageHtml, baseURL: baseURL)
         } catch LoadDemoPageError.nilPath {
             print(print("webView loadDemoPage error: pagePath is nil"))
