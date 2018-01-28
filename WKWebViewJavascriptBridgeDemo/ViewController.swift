@@ -25,12 +25,12 @@ class ViewController: UIViewController {
         view.addSubview(webView)
         
         // setup btns
-        callbackBtn.backgroundColor = .purple
+        callbackBtn.backgroundColor = UIColor(red: 255.0/255, green: 166.0/255, blue: 124.0/255, alpha: 1.0)
         callbackBtn.setTitle("Call Handler", for: .normal)
         callbackBtn.addTarget(self, action: #selector(callHandler), for: .touchUpInside)
         view.insertSubview(callbackBtn, aboveSubview: webView)
         callbackBtn.frame = CGRect(x: 10, y: UIScreen.main.bounds.size.height - 80, width: UIScreen.main.bounds.size.width * 0.4, height: 35)
-        reloadBtn.backgroundColor = .orange
+        reloadBtn.backgroundColor = UIColor(red: 216.0/255, green: 103.0/255, blue: 216.0/255, alpha: 1.0)
         reloadBtn.setTitle("Reload Webview", for: .normal)
         reloadBtn.addTarget(self, action: #selector(reloadWebView), for: .touchUpInside)
         view.insertSubview(reloadBtn, aboveSubview: webView)

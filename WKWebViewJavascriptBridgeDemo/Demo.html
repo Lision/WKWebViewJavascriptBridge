@@ -3,9 +3,10 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
 	<style type='text/css'>
 		html { font-family:Helvetica; color:#222; }
-		h1 { color:steelblue; font-size:24px; margin-top:24px; }
-		button { margin:0 3px 10px; font-size:12px; }
-		.logLine { border-bottom:1px solid #ccc; padding:4px 2px; font-family:courier; font-size:11px; }
+        h1 { color:#FE8FBD; font-size:24px; margin-top:24px; }
+		button { margin:0 3px 10px; font-size:14px; border: 2px solid #000000; }
+        .logLine_Native { border-bottom:1px solid #FFA67C; padding:4px 2px; font-family:courier; font-size:12px; }
+        .logLine_JS { border-bottom:1px solid #D867D8; padding:4px 2px; font-family:courier; font-size:12px; }
 	</style>
 </head><body>
 	<h1>Demo</h1>
@@ -23,19 +24,19 @@
 
     setupWKWebViewJavascriptBridge(function(bridge) {
 		var uniqueId = 1
-		function log(message, data) {
+		function log(message, data, type) {
 			var log = document.getElementById('log')
 			var el = document.createElement('div')
-			el.className = 'logLine'
+            el.className = type == 'native' ? 'logLine_Native' : 'logLine_JS'
 			el.innerHTML = uniqueId++ + '. ' + message + ':<br/>' + JSON.stringify(data)
 			if (log.children.length) { log.insertBefore(el, log.children[0]) }
 			else { log.appendChild(el) }
 		}
 
 		bridge.registerHandler('testJavascriptHandler', function(data, responseCallback) {
-			log('iOS called testJavascriptHandler with', data)
+			log('iOS called testJavascriptHandler with', data, 'native')
 			var responseData = { 'Javascript Says':'Right back atcha!' }
-			log('JS responding with', responseData)
+			log('JS responding with', responseData, 'native')
 			responseCallback(responseData)
 		})
 
@@ -47,7 +48,7 @@
 			e.preventDefault()
 			log('JS calling handler "testiOSCallback"')
 			bridge.callHandler('testiOSCallback', {'foo': 'bar'}, function(response) {
-				log('JS got response', response)
+				log('JS got response', response, 'js')
 			})
 		}
 	})
