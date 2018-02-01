@@ -90,13 +90,13 @@ setupWKWebViewJavascriptBridge(function(bridge) {
 
 ### Cocoapods
 
-1. Add `pod 'WKWebViewJavascriptBridge', '~> 1.0.1'` to your Podfile.
+1. Add `pod 'WKWebViewJavascriptBridge', '~> 1.1.0'` to your Podfile.
 2. Run `pod install` or `pod update`.
 3. Add `import WKWebViewJavascriptBridge`.
 
 ### Carthage
 
-1. Add `github "Lision/WKWebViewJavascriptBridge" ~> 1.0.1` to your Cartfile.
+1. Add `github "Lision/WKWebViewJavascriptBridge" ~> 1.1.0` to your Cartfile.
 2. Run `carthage update --platform ios`.
 3. Add the `WKWebViewJavascriptBridge` framework to your project.
 
