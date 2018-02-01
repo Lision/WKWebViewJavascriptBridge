@@ -20,12 +20,16 @@ public class WKWebViewJavascriptBridge: NSObject {
     public init(webView: WKWebView) {
         super.init()
         self.webView = webView
-        self.webView?.configuration.userContentController.add(self, name: iOS_Native_InjectJavascript)
-        self.webView?.configuration.userContentController.add(self, name: iOS_Native_FlushMessageQueue)
         base = WKWebViewJavascriptBridgeBase()
         base.delegate = self
+        addScriptMessageHandlers()
     }
     
+    deinit {
+        removeScriptMessageHandlers()
+    }
+    
+    // MARK: - Public Funcs
     public func reset() {
         base.reset()
     }
@@ -42,7 +46,8 @@ public class WKWebViewJavascriptBridge: NSObject {
         base.send(handlerName: handlerName, data: data, callback: callback)
     }
     
-    func flushMessageQueue() {
+    // MARK: - Private Funcs
+    private func flushMessageQueue() {
         webView?.evaluateJavaScript("WKWebViewJavascriptBridge._fetchQueue();") { (result, error) in
             if error != nil {
                 print("WKWebViewJavascriptBridge: WARNING: Error when trying to fetch data from WKWebView: \(String(describing: error))")
@@ -51,6 +56,16 @@ public class WKWebViewJavascriptBridge: NSObject {
             guard let resultStr = result as? String else { return }
             self.base.flush(messageQueueString: resultStr)
         }
+    }
+    
+    private func addScriptMessageHandlers() {
+        webView?.configuration.userContentController.add(LeakAvoider(delegate: self), name: iOS_Native_InjectJavascript)
+        webView?.configuration.userContentController.add(LeakAvoider(delegate: self), name: iOS_Native_FlushMessageQueue)
+    }
+    
+    private func removeScriptMessageHandlers() {
+        webView?.configuration.userContentController.removeScriptMessageHandler(forName: iOS_Native_InjectJavascript)
+        webView?.configuration.userContentController.removeScriptMessageHandler(forName: iOS_Native_FlushMessageQueue)
     }
 }
 
@@ -69,5 +84,20 @@ extension WKWebViewJavascriptBridge: WKScriptMessageHandler {
         if message.name == iOS_Native_FlushMessageQueue {
             flushMessageQueue()
         }
+    }
+}
+
+class LeakAvoider: NSObject {
+    weak var delegate: WKScriptMessageHandler?
+    
+    init(delegate: WKScriptMessageHandler) {
+        super.init()
+        self.delegate = delegate
+    }
+}
+
+extension LeakAvoider: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        delegate?.userContentController(userContentController, didReceive: message)
     }
 }

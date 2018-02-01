@@ -8,7 +8,6 @@
 
 import Foundation
 
-@available(iOS 9.0, *)
 protocol WKWebViewJavascriptBridgeBaseDelegate: AnyObject {
     func evaluateJavascript(javascript: String)
 }
