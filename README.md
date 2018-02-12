@@ -10,6 +10,8 @@
 
 > [中文介绍](https://github.com/Lision/WKWebViewJavascriptBridge/blob/master/README_ZH-CN.md)
 
+> This project is inspired by [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)!
+
 # What Can WKWebViewJavascriptBridge Do?
 
 You can write hybrid moudles in just a few lines of code by use WKWebViewJavascriptBridge without need to be concerned with the underlying messaging implementation.

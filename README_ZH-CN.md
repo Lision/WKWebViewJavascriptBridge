@@ -8,6 +8,8 @@
 [![Build Status](https://api.travis-ci.org/Lision/WKWebViewJavascriptBridge.svg?branch=master)](https://travis-ci.org/Lision/WKWebViewJavascriptBridge)&nbsp;
 [![CocoaPods](https://img.shields.io/cocoapods/v/WKWebViewJavascriptBridge.svg?style=flat)](http://cocoapods.org/pods/WKWebViewJavascriptBridge)
 
+> 此项目基于 [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)，在其上仅对 WKWebView 提供支持，由 Swift 实现！
+
 # WKWebViewJavascriptBridge 能为你做什么?
 
 您可以通过使用 WKWebViewJavascriptBridge 书写几行代码实现混合模块，而无需关心底层的消息传递实现。
