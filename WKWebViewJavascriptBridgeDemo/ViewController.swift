@@ -38,6 +38,7 @@ class ViewController: UIViewController {
         
         // setup bridge
         bridge = WKWebViewJavascriptBridge(webView: webView)
+        bridge.isLogEnable = true
         bridge.register(handlerName: "testiOSCallback") { (paramters, callback) in
             print("testiOSCallback called: \(String(describing: paramters))")
             callback?("Response from testiOSCallback")

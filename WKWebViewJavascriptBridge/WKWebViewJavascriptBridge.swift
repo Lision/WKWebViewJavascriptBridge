@@ -11,6 +11,15 @@ import WebKit
 
 @available(iOS 9.0, *)
 public class WKWebViewJavascriptBridge: NSObject {
+    public var isLogEnable: Bool {
+        get {
+            return self.base!.isLogEnable
+        }
+        set(newValue) {
+            self.base!.isLogEnable = newValue
+        }
+    }
+
     private let iOS_Native_InjectJavascript = "iOS_Native_InjectJavascript"
     private let iOS_Native_FlushMessageQueue = "iOS_Native_FlushMessageQueue"
     

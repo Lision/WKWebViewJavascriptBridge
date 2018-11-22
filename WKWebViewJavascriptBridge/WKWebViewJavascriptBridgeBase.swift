@@ -14,6 +14,8 @@ protocol WKWebViewJavascriptBridgeBaseDelegate: AnyObject {
 
 @available(iOS 9.0, *)
 public class WKWebViewJavascriptBridgeBase: NSObject {
+    var isLogEnable = false
+    
     public typealias Callback = (_ responseData: Any?) -> Void
     public typealias Handler = (_ parameters: [String: Any]?, _ callback: Callback?) -> Void
     public typealias Message = [String: Any]
@@ -146,8 +148,12 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
     // MARK: - Log
     private func log<T>(_ message: T, file: String = #file, function: String = #function, line: Int = #line) {
         #if DEBUG
-            let fileName = (file as NSString).lastPathComponent
-            print("\(fileName):\(line) \(function) | \(message)")
+        guard isLogEnable else {
+            return
+        }
+        
+        let fileName = (file as NSString).lastPathComponent
+        print("\(fileName):\(line) \(function) | \(message)")
         #endif
     }
 }
