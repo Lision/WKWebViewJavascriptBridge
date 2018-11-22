@@ -15,5 +15,3 @@ FOUNDATION_EXPORT double WKWebViewJavascriptBridgeVersionNumber;
 FOUNDATION_EXPORT const unsigned char WKWebViewJavascriptBridgeVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <WKWebViewJavascriptBridge/PublicHeader.h>
-
-
