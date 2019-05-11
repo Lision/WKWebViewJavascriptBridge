@@ -13,7 +13,8 @@
 		BC4A38AE20138F7500E96E5D /* WKWebViewJavascriptBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4A38A420138F7500E96E5D /* WKWebViewJavascriptBridge.framework */; };
 		BC4A38B320138F7500E96E5D /* WKWebViewJavascriptBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4A38B220138F7500E96E5D /* WKWebViewJavascriptBridgeTests.swift */; };
 		BC4A38B520138F7500E96E5D /* WKWebViewJavascriptBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = BC4A38A720138F7500E96E5D /* WKWebViewJavascriptBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BC942673201750BA00A5A6F9 /* WKWebViewJavascriptBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4A38A420138F7500E96E5D /* WKWebViewJavascriptBridge.framework */; };
+		BC6385C42286E283007C7E5E /* WKWebViewJavascriptBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4A38A420138F7500E96E5D /* WKWebViewJavascriptBridge.framework */; };
+		BC6385C52286E283007C7E5E /* WKWebViewJavascriptBridge.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BC4A38A420138F7500E96E5D /* WKWebViewJavascriptBridge.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BC94267420182E8300A5A6F9 /* Demo.html in Resources */ = {isa = PBXBuildFile; fileRef = BC995A582016F6A60012F728 /* Demo.html */; };
 		BC995A492016F5690012F728 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC995A482016F5690012F728 /* AppDelegate.swift */; };
 		BC995A4B2016F5690012F728 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC995A4A2016F5690012F728 /* ViewController.swift */; };
@@ -30,7 +31,28 @@
 			remoteGlobalIDString = BC4A38A320138F7500E96E5D;
 			remoteInfo = WKWebViewJavascriptBridge;
 		};
+		BC6385C62286E283007C7E5E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC4A389B20138F7500E96E5D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BC4A38A320138F7500E96E5D;
+			remoteInfo = WKWebViewJavascriptBridge;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BC6385C82286E283007C7E5E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BC6385C52286E283007C7E5E /* WKWebViewJavascriptBridge.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		BC3D0B1B201440BF008B7E77 /* WKWebViewJavascriptBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKWebViewJavascriptBridge.swift; sourceTree = "<group>"; };
@@ -72,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC942673201750BA00A5A6F9 /* WKWebViewJavascriptBridge.framework in Frameworks */,
+				BC6385C42286E283007C7E5E /* WKWebViewJavascriptBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,10 +221,12 @@
 				BC995A422016F5690012F728 /* Sources */,
 				BC995A432016F5690012F728 /* Frameworks */,
 				BC995A442016F5690012F728 /* Resources */,
+				BC6385C82286E283007C7E5E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BC6385C72286E283007C7E5E /* PBXTargetDependency */,
 			);
 			name = WKWebViewJavascriptBridgeDemo;
 			productName = WKWebViewJavascriptBridgeDemo;
@@ -319,6 +343,11 @@
 			target = BC4A38A320138F7500E96E5D /* WKWebViewJavascriptBridge */;
 			targetProxy = BC4A38AF20138F7500E96E5D /* PBXContainerItemProxy */;
 		};
+		BC6385C72286E283007C7E5E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BC4A38A320138F7500E96E5D /* WKWebViewJavascriptBridge */;
+			targetProxy = BC6385C62286E283007C7E5E /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -398,6 +427,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -452,6 +482,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -538,6 +569,7 @@
 		BC995A552016F5690012F728 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ACXP2JHJKF;
@@ -554,6 +586,7 @@
 		BC995A562016F5690012F728 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ACXP2JHJKF;
