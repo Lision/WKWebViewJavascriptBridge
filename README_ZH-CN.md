@@ -34,7 +34,7 @@ iOS 平台跨域访问漏洞成因是由于 UIWebView 默认开启了WebKitAllow
 
 # 特性
 
-- Swift 的支持：Swift 3.2 ~ 4.2 的支持。
+- Swift 的支持：Swift 3.2 ~ 5 的支持。
 - 高性能：消息传递性能高于传统实现方式（拦截 Requests）。
 - 高速：无需考虑 Alert Box 安全超时。
 - 轻量：框架除去自动生成的 `.h` 仅有 3 个文件。
