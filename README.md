@@ -14,7 +14,7 @@
 
 # What Can WKWebViewJavascriptBridge Do?
 
-You can write hybrid moudles in just a few lines of code by use WKWebViewJavascriptBridge without need to be concerned with the underlying messaging implementation.
+You can write hybrid modules in just a few lines of code by using WKWebViewJavascriptBridge without the need to be concerned with the underlying messaging implementation.
 
 ![](Rources/WKWebViewJavascriptBridgeDemo.gif)
 
@@ -51,8 +51,8 @@ bridge = WKWebViewJavascriptBridge(webView: webView)
 ### 2. Register a Handler in Native, and Call a JS Handler: 
 
 ``` swift
-bridge.register(handlerName: "testiOSCallback") { (paramters, callback) in
-    print("testiOSCallback called: \(String(describing: paramters))")
+bridge.register(handlerName: "testiOSCallback") { (parameters, callback) in
+    print("testiOSCallback called: \(String(describing: parameters))")
     callback?("Response from testiOSCallback")
 }
 
