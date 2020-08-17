@@ -76,10 +76,10 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
                     }
                 }
                 
-                guard let handlerName = message["handlerName"] as? String else { return }
+                guard let handlerName = message["handlerName"] as? String else { continue }
                 guard let handler = messageHandlers[handlerName] else {
                     log("NoHandlerException, No handler for message from JS: \(message)")
-                    return
+                    continue
                 }
                 handler(message["data"] as? [String : Any], callback)
             }
