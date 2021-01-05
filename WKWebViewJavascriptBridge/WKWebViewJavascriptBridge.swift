@@ -79,8 +79,8 @@ public class WKWebViewJavascriptBridge: NSObject {
 }
 
 extension WKWebViewJavascriptBridge: WKWebViewJavascriptBridgeBaseDelegate {
-    func evaluateJavascript(javascript: String) {
-        webView?.evaluateJavaScript(javascript, completionHandler: nil)
+    func evaluateJavascript(javascript: String, completion: CompletionHandler) {
+        webView?.evaluateJavaScript(javascript, completionHandler: completion)
     }
 }
 
