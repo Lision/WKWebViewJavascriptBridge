@@ -9,7 +9,15 @@
 import Foundation
 
 protocol WKWebViewJavascriptBridgeBaseDelegate: AnyObject {
-    func evaluateJavascript(javascript: String)
+    typealias CompletionHandler = ((Any?, Error?) -> Void)?
+    
+    func evaluateJavascript(javascript: String, completion: CompletionHandler)
+}
+
+extension WKWebViewJavascriptBridgeBaseDelegate {
+    func evaluateJavascript(javascript: String) {
+        evaluateJavascript(javascript: javascript, completion: nil)
+    }
 }
 
 @available(iOS 9.0, *)
@@ -21,13 +29,13 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
     public typealias Message = [String: Any]
     
     weak var delegate: WKWebViewJavascriptBridgeBaseDelegate?
-    var startupMessageQueue = [Message]()
+    var startupMessageQueue: [Message]? = []
     var responseCallbacks = [String: Callback]()
     var messageHandlers = [String: Handler]()
     var uniqueId = 0
     
     func reset() {
-        startupMessageQueue = [Message]()
+        startupMessageQueue = nil
         responseCallbacks = [String: Callback]()
         uniqueId = 0
     }
@@ -88,15 +96,25 @@ public class WKWebViewJavascriptBridgeBase: NSObject {
     
     func injectJavascriptFile() {
         let js = WKWebViewJavascriptBridgeJS
-        delegate?.evaluateJavascript(javascript: js)
+        delegate?.evaluateJavascript(javascript: js, completion: { [weak self] (_, error) in
+            guard let self = self else { return }
+            if let error = error {
+                self.log(error)
+                return
+            }
+            self.startupMessageQueue?.forEach({ (message) in
+                self.dispatch(message: message)
+            })
+            self.startupMessageQueue = nil
+        })
     }
     
     // MARK: - Private
     private func queue(message: Message) {
-        if startupMessageQueue.isEmpty {
+        if startupMessageQueue == nil {
             dispatch(message: message)
         } else {
-            startupMessageQueue.append(message)
+            startupMessageQueue?.append(message)
         }
     }
     
