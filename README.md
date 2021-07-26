@@ -37,7 +37,7 @@ The reason for the iOS platform cross-domain access vulnerability is due to UIWe
 - **Swift Support:** Swift 3.2 ~ 5 Support.
 - **High Performance:** The messaging performance is higher than intercept requests.
 - **High Speed:** No need to consider alert box safety timeout.
-- **Lightwight:** This framework contains only 3 files.
+- **Lightweight:** This framework contains only 3 files.
 - **Non-intrusive:** There is no need to make the webview class inherit from other base class.
 
 # Usage
