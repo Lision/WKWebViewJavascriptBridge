@@ -29,6 +29,8 @@ open class WKWebViewJavascriptBridge: NSObject {
         window.WKWVJBCallbacks = [callback];
         window.webkit.messageHandlers.iOS_Native_InjectJavascript.postMessage(null)
     }
+    setupWKWebViewJavascriptBridge(function(bridge) {
+    })
     """
     
     private weak var webView: WKWebView?
