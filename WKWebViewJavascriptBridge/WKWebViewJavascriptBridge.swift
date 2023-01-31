@@ -10,7 +10,7 @@ import Foundation
 import WebKit
 
 @available(iOS 9.0, *)
-public class WKWebViewJavascriptBridge: NSObject {
+open class WKWebViewJavascriptBridge: NSObject {
     public var isLogEnable: Bool {
         get {
             return self.base!.isLogEnable
@@ -22,6 +22,14 @@ public class WKWebViewJavascriptBridge: NSObject {
 
     private let iOS_Native_InjectJavascript = "iOS_Native_InjectJavascript"
     private let iOS_Native_FlushMessageQueue = "iOS_Native_FlushMessageQueue"
+    private let iOS_Native_SetupJSBridge = """
+    function setupWKWebViewJavascriptBridge(callback) {
+        if (window.WKWebViewJavascriptBridge) { return callback(WKWebViewJavascriptBridge); }
+        if (window.WKWVJBCallbacks) { return window.WKWVJBCallbacks.push(callback); }
+        window.WKWVJBCallbacks = [callback];
+        window.webkit.messageHandlers.iOS_Native_InjectJavascript.postMessage(null)
+    }
+    """
     
     private weak var webView: WKWebView?
     private var base: WKWebViewJavascriptBridgeBase!
@@ -53,6 +61,16 @@ public class WKWebViewJavascriptBridge: NSObject {
     
     public func call(handlerName: String, data: Any? = nil, callback: WKWebViewJavascriptBridgeBase.Callback? = nil) {
         base.send(handlerName: handlerName, data: data, callback: callback)
+    }
+    
+    public func setupBridge() {
+        webView?.evaluateJavaScript(iOS_Native_SetupJSBridge) {_,error in
+            if error != nil {
+                print("WKWebViewJavascriptBridge: init error: \(String(describing: error))")
+            } else {
+                print("WKWebViewJavascriptBridge: init done")
+            }
+        }
     }
     
     // MARK: - Private Funcs
