@@ -58,8 +58,17 @@ bridge.register(handlerName: "testiOSCallback") { (parameters, callback) in
 
 bridge.call(handlerName: "testJavascriptHandler", data: ["foo": "before ready"], callback: nil)
 ```
+### If you cannot edit js
+### 3-1. Inject when webview finish
 
-### 3. Copy and Paste setupWKWebViewJavascriptBridge into Your JS: 
+```swift
+func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) { 
+    bridge.setupBridge()
+}
+```
+
+### If you use local js 
+### 3-2-1. Copy and Paste setupWKWebViewJavascriptBridge into Your JS: 
 
 ``` js
 function setupWKWebViewJavascriptBridge(callback) {
@@ -70,7 +79,7 @@ function setupWKWebViewJavascriptBridge(callback) {
 }
 ```
 
-### 4. Finally, Call setupWKWebViewJavascriptBridge and then Use The Bridge to Register Handlers and Call Native Handlers:
+### 3-2-2. Finally, Call setupWKWebViewJavascriptBridge and then Use The Bridge to Register Handlers and Call Native Handlers:
 
 ``` js
 setupWKWebViewJavascriptBridge(function(bridge) {
