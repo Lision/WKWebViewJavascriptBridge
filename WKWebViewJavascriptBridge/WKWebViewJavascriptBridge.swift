@@ -20,11 +20,12 @@ open class WKWebViewJavascriptBridge: NSObject {
         }
     }
 
+    public var bridgeContainerName = "WKWebViewJavascriptBridge"
     private let iOS_Native_InjectJavascript = "iOS_Native_InjectJavascript"
     private let iOS_Native_FlushMessageQueue = "iOS_Native_FlushMessageQueue"
-    private let iOS_Native_SetupJSBridge = """
+    private lazy var iOS_Native_SetupJSBridge = """
     function setupWKWebViewJavascriptBridge(callback) {
-        if (window.WKWebViewJavascriptBridge) { return callback(WKWebViewJavascriptBridge); }
+        if (window.\(bridgeContainerName)) { return callback(\(bridgeContainerName)); }
         if (window.WKWVJBCallbacks) { return window.WKWVJBCallbacks.push(callback); }
         window.WKWVJBCallbacks = [callback];
         window.webkit.messageHandlers.iOS_Native_InjectJavascript.postMessage(null)
@@ -39,7 +40,7 @@ open class WKWebViewJavascriptBridge: NSObject {
     public init(webView: WKWebView) {
         super.init()
         self.webView = webView
-        base = WKWebViewJavascriptBridgeBase()
+        base = WKWebViewJavascriptBridgeBase(bridgeContainerName)
         base.delegate = self
         addScriptMessageHandlers()
     }
@@ -77,7 +78,7 @@ open class WKWebViewJavascriptBridge: NSObject {
     
     // MARK: - Private Funcs
     private func flushMessageQueue() {
-        webView?.evaluateJavaScript("WKWebViewJavascriptBridge._fetchQueue();") { (result, error) in
+        webView?.evaluateJavaScript("\(bridgeContainerName)._fetchQueue();") { (result, error) in
             if error != nil {
                 print("WKWebViewJavascriptBridge: WARNING: Error when trying to fetch data from WKWebView: \(String(describing: error))")
             }
