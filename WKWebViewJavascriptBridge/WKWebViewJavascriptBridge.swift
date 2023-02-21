@@ -20,7 +20,7 @@ open class WKWebViewJavascriptBridge: NSObject {
         }
     }
 
-    public var bridgeContainerName = "WKWebViewJavascriptBridge"
+    open var bridgeContainerName: String { "WKWebViewJavascriptBridge" }
     private let iOS_Native_InjectJavascript = "iOS_Native_InjectJavascript"
     private let iOS_Native_FlushMessageQueue = "iOS_Native_FlushMessageQueue"
     private lazy var iOS_Native_SetupJSBridge = """
