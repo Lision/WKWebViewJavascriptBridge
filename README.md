@@ -90,6 +90,13 @@ setupWKWebViewJavascriptBridge(function(bridge) {
 
 # Installation
 
+### Swift Package Manager
+
+1. In Xcode, select **File > Add Package Dependencies...**.
+2. Enter `https://github.com/Lision/WKWebViewJavascriptBridge.git`.
+3. Add the `WKWebViewJavascriptBridge` package to your app target.
+4. Add `import WKWebViewJavascriptBridge`.
+
 ### Cocoapods
 
 1. Add `pod 'WKWebViewJavascriptBridge', '~> 1.2.0'` to your Podfile.
